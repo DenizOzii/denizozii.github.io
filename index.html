@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
+  <head>
+    <title>My Website</title>
+  </head>
+  <body>
+    <div id="output"></div>
+    <script>
+      // make an HTTP request to your Python script and display the response on your website
+      fetch('https://gist.githubusercontent.com/DenizOzii/44a2327d6db7a57be51c3e2ce1d3628a/raw/2ee846890021a6f203f35a456d41201a89182459/hoursCalculation.py')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('output').innerText = data;
+        });
+    </script>
+  </body>
 </html>
