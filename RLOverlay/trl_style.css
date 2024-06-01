@@ -1,0 +1,257 @@
+@font-face {
+    font-family: "Bourgeois";
+    src: url("Bourgeois-Bold.ttf") format("truetype");
+}
+
+body {
+    font-family: 'Bourgeois', sans-serif;
+    width: 1920px;
+    height: 1080px;
+    position: relative;
+    margin:0%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.scorebug {
+    position: relative;
+    background-image: url("Scoreboard.png");
+    width: 1300px;
+    height: 122px;
+    top: 67px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.timer {
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    top: 56px;
+    color: rgb(255, 255, 255);
+    transform: translate(-50%, -50%);
+}
+
+.series {
+    position: absolute;
+    text-align: center;
+    left: 50%;
+    top: 103px;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+}
+
+.team-name {
+    position: absolute;
+    transform: translate(-100%, -50%);
+    top: 54px;
+}
+
+#leftName {
+    position: absolute;
+    font-size: 28pt;
+    width: 476px;
+    height: 72px;
+    top: 32px;
+    left: 10px;
+    text-anchor: end;
+    text-align: right;
+    color: #1873ff;
+}
+
+#leftScore {
+    position: absolute;
+    font-size: 35pt;
+    width: 72px;
+    height: 72px;
+    text-align: center;
+    text-anchor: middle;
+    color: rgb(255, 255, 255);
+    left: 38.50%;
+    top: 21%;
+}
+
+#rightName {
+    position: absolute;
+    font-size: 28pt;
+    width: 476px;
+    height: 72px;
+    top: 32px;
+    right: 10px;
+    text-anchor: start;
+    text-align: left;
+    color: #ff7200;
+}
+
+#rightScore {
+    position: absolute;
+    font-size: 35pt;
+    width: 72px;
+    height: 72px;
+    text-align: center;
+    text-anchor: middle;
+    color: rgb(255, 255, 255);
+    right: 38.50%;
+    top: 21%;
+}
+
+.target {
+    width: 350px;
+    height: 20px;
+    color: white;
+    font-size: 30pt;
+    text-align: left;
+}
+
+.target-stats-background {
+    width: 350px;
+    height:20px;
+    background-color: black;
+    border-radius: 12px;
+}
+
+.target-player-background {
+    background-color: white;
+    border-radius: 12px 12px 0px 12px;    
+}
+
+.team.players {
+    position: absolute;
+    width: 333px;
+    height: 184px;
+    font-size: 30pt;
+    top: 640px;
+}
+
+#teamLeftPlayers {
+    color: #1873ff;
+    left: 10px;
+}
+
+.leftboost {
+    text-anchor: end;
+    text-align: right;
+}
+
+.rightboost {
+    text-anchor: start;
+    text-align: left;
+}
+
+#teamRightPlayers {
+    color: #ff7200;
+    right: 10px;
+    text-align: right;
+}
+
+.background {
+    position:absolute;
+    width: 350px;
+    height: 55px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+/* Left team boost bars */
+#player1BoostBar {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    position:absolute;
+    top: 65%;
+    left: 10px;
+    max-width:300px;
+    height: 5px;
+    color: #1873ff;
+}
+
+#player1Background {
+    top: 60.3%;
+    left: 3px;
+}
+
+#player2BoostBar {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    position:absolute;
+    top: 70.6%;
+    left: 10px;
+    max-width:300px;
+    height: 5px;
+    color: #1873ff;
+}
+
+#player2Background {
+    top: 66.0%;
+    left: 3px;
+}
+
+#player3BoostBar {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    position: absolute;
+    top: 76.1%;
+    left: 10px;
+    max-width:300px;
+    height: 5px;
+    color: #1873ff;
+}
+
+#player3Background {
+    top: 71.7%;
+    left: 3px;
+}
+
+/* Right team players */
+.right-playerlist.name {
+    text-align: right;
+}
+
+/* Right team boost bars */
+
+.blue-boost-bar{
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    background-color:#1873ff;
+    left: 10px;
+    offset-anchor: left;
+    height:5px;
+}
+
+.orange-boost-bar {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+    background-color:#ff7200;
+    right: 10px;
+    offset-anchor: right;
+    height: 5px;
+}
+
+#player4BoostBar {
+    position: absolute;
+    top: 65%;
+}
+
+#player4Background {
+    top: 60.3%;
+    right: 3px;
+}
+
+#player5BoostBar {
+    position: absolute;
+    top: 70.5%;
+}
+/* aaa */
+#player5Background {
+    top: 66.0%;
+    right: 3px;
+}
+
+#player6BoostBar {
+    position: absolute;
+    top: 76.1%;
+}
+
+#player6Background {
+    top: 71.7%;
+    right: 3px;
+}
+
+.stat-integers {
+    text-align: right;
+
+}
