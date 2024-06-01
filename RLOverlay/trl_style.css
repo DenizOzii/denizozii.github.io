@@ -5,6 +5,7 @@
 
 body {
     font-family: 'Bourgeois', sans-serif;
+    font-weight: bold;
     width: 1920px;
     height: 1080px;
     position: relative;
@@ -50,6 +51,7 @@ body {
 #leftName {
     position: absolute;
     font-size: 28pt;
+    font-weight: 700;
     width: 476px;
     height: 72px;
     top: 32px;
