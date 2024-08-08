@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="height: 385px; object-fit: scale-down;"></div>
+  <script>
+    var map = L.map('map').setView([38.9637, 35.2433], 6); // Centered on Turkey
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var currentMarker = null;
+    var ws = new WebSocket('ws://localhost:8080'); // WebSocket server URL
+
+    map.on('click', function(e) {
+      var lat = e.latlng.lat;
+      var lng = e.latlng.lng;
+      console.log("Latitude: " + lat + ", Longitude: " + lng);
+
+      if (currentMarker) {
+        map.removeLayer(currentMarker);
+      }
+
+      currentMarker = L.marker([lat, lng]).addTo(map)
+        .bindPopup("Latitude: " + lat + "<br>Longitude: " + lng)
+        .openPopup();
+
+      // Send the coordinates to the WebSocket server
+      ws.send(JSON.stringify({ lat: lat, lng: lng }));
+    });
+  </script>
+</body>
+</html>
