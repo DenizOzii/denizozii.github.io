@@ -12,6 +12,17 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
+    
+    var hvlsnMarker = L.icon({
+      
+      iconUrl: "files/marker-icon.png",
+      shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      tooltipAnchor: [16, -28],
+      shadowSize: [41, 41]
+    })
 
     var currentMarker = null;
     var ws = new WebSocket('ws://localhost:8080'); // WebSocket server URL
@@ -25,7 +36,7 @@
         map.removeLayer(currentMarker);
       }
 
-      currentMarker = L.marker([lat, lng]).addTo(map)
+      currentMarker = L.marker([lat, lng], {icon: hvlsnMarker}).addTo(map)
         .bindPopup("Latitude: " + lat + "<br>Longitude: " + lng)
         .openPopup();
 
