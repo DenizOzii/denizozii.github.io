@@ -7,6 +7,7 @@ class PolygonDrawer {
         this.completedPolygons = [];
         this.isDrawing = false;
         this.websocket = null;
+        this.selectedPolygon = null;
 
         this.init();
         this.initWebSocket();
@@ -59,7 +60,12 @@ class PolygonDrawer {
         
         // Control buttons
         document.getElementById('undoBtn').addEventListener('click', () => this.undoLast());
-        
+
+        // Delete dialog buttons
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => this.confirmDelete());
+        document.getElementById('cancelDeleteBtn').addEventListener('click', () => this.cancelDelete());
+        document.getElementById('overlay').addEventListener('click', () => this.cancelDelete());
+
         // Disable default context menu
         this.map.getContainer().addEventListener('contextmenu', (e) => e.preventDefault());
     }
@@ -154,12 +160,14 @@ class PolygonDrawer {
             fillOpacity: 0.2
         }).addTo(this.map);
         
-        // Add popup with area information
+        // Add popup with area information and delete button
         const area = this.calculatePolygonArea(this.currentPoints);
+        const polygonId = this.completedPolygons.length + 1;
         polygon.bindPopup(`
-            <strong>Polygon ${this.completedPolygons.length + 1}</strong><br>
+            <strong>Polygon ${polygonId}</strong><br>
             Points: ${this.currentPoints.length}<br>
-            Area: ${area.toFixed(2)} km²
+            Area: ${area.toFixed(2)} km²<br>
+            <button class="popup-delete-btn" onclick="polygonDrawer.selectPolygonForDeletion(${polygonId})">Delete Polygon</button>
         `);
         
         // Prepare polygon data for WebSocket
@@ -301,9 +309,79 @@ class PolygonDrawer {
         // Update button states
         document.getElementById('undoBtn').disabled = this.currentPoints.length === 0;
     }
+
+    selectPolygonForDeletion(polygonId) {
+        // Find the polygon data in completedPolygons array by ID
+        const polygonIndex = this.completedPolygons.findIndex(p => p.data.id === polygonId);
+        if (polygonIndex === -1) return;
+
+        this.selectedPolygon = {
+            polygon: this.completedPolygons[polygonIndex].polygon,
+            index: polygonIndex,
+            data: this.completedPolygons[polygonIndex]
+        };
+
+        // Show confirmation dialog
+        this.showDeleteDialog();
+    }
+
+    showDeleteDialog() {
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('deleteDialog').style.display = 'block';
+    }
+
+    hideDeleteDialog() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('deleteDialog').style.display = 'none';
+        this.selectedPolygon = null;
+    }
+
+    confirmDelete() {
+        if (!this.selectedPolygon) return;
+
+        // Remove polygon from map
+        this.map.removeLayer(this.selectedPolygon.polygon);
+
+        // Remove from completedPolygons array
+        this.completedPolygons.splice(this.selectedPolygon.index, 1);
+
+        // Send deletion notification via WebSocket
+        this.sendPolygonDeletion(this.selectedPolygon.data.data);
+
+        // Hide dialog
+        this.hideDeleteDialog();
+
+        console.log('Polygon deleted:', this.selectedPolygon.data.data);
+    }
+
+    cancelDelete() {
+        this.hideDeleteDialog();
+    }
+
+    sendPolygonDeletion(polygonData) {
+        if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
+            try {
+                const message = {
+                    type: 'polygon_deleted',
+                    data: {
+                        id: polygonData.id,
+                        timestamp: new Date().toISOString(),
+                        originalData: polygonData
+                    }
+                };
+                this.websocket.send(JSON.stringify(message));
+                console.log('Polygon deletion sent via WebSocket:', message.data);
+            } catch (error) {
+                console.error('Failed to send polygon deletion:', error);
+            }
+        } else {
+            console.warn('WebSocket not connected. Polygon deletion not sent:', polygonData);
+        }
+    }
 }
 
 // Initialize the application when the page loads
+let polygonDrawer;
 document.addEventListener('DOMContentLoaded', () => {
-    new PolygonDrawer();
+    polygonDrawer = new PolygonDrawer();
 });
